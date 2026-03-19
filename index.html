@@ -17,13 +17,19 @@
             <div class="switch-btn"></div>
         </div>
     </div>
+
+    <!--add sound on click-->
+
+    <audio id="audio" src="click.mp3" autostart="false"></audio>
 <!--
     <script>
         let switchBtn = document.querySelector('.switch-btn');
         let body = document.querySelector('body');
+        let audio = document.getElementById('#audio');
 
         switchBtn.onclick = function(){
             body.classList.toggle('on');
+            audio.play();
         }
     </script>
 -->
