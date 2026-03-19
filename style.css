@@ -22,11 +22,18 @@ body.on{
     border-radius: 50%;
     z-index: 2;
 }
-/*
+
 body.on .bulb{
     background-color: #fff;
-    box-shadow: 0 0 50px #fff;
-}*/
+    box-shadow: 0 0 50px #fff,
+    0 0 100px #fff,
+    0 0 150px #fff,
+    0 0 200px #fff,
+    0 0 250px #fff,
+    0 0 300px #fff,
+    0 0 350px #fff,
+    0 0 400px #fff;
+}
 .bulb::before{
     content: '';
     position: absolute;
@@ -38,7 +45,9 @@ body.on .bulb{
     border-top: 30px solid #000;
     border-radius: 10px;
 }
-/*
+body.on .bulb::before{
+    background: #fff;
+}
 body.on .bulb::after{
     content: '';
     position: absolute;
@@ -51,7 +60,7 @@ body.on .bulb::after{
     border-radius: 50%;
     filter: blur(30px);
 
-}*/
+}
 .bulb span:nth-child(1){
     position: absolute;
     top: -16px;
@@ -64,6 +73,9 @@ body.on .bulb::after{
     border-bottom-right-radius: 40px;
     box-shadow: 20px 20px 0 10px #444;
 }
+body.on .bulb span:nth-child(1){
+    box-shadow: 20px 20px 0 10px #fff;
+}
 .bulb span:nth-child(2){
     position: absolute;
     top: -16px;
@@ -75,6 +87,9 @@ body.on .bulb::after{
     transform: rotate(17deg);
     border-bottom-left-radius: 40px;
     box-shadow: -20px 20px 0 10px #444;
+}
+body.on .bulb span:nth-child(2){
+    box-shadow: -20px 20px 0 10px #fff;
 }
 .wire{
     position: absolute;
