@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { background: #fff; padding: 100px; display: flex; justify-content: center; }
+  
+  .bulb-pear {
+    width: 120px;
+    height: 170px;
+    background: transparent;
+    border: 3px solid #ccc;
+    /* This creates the pear shape! */
+    border-radius: 50% 50% 30% 30% / 40% 40% 60% 60%;
+    position: relative;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.2), inset 0 0 5px rgba(255,255,255,0.5);
+  }
+  
+  .bulb-pear::before {
+    content: '';
+    position: absolute;
+    bottom: -25px; /* Position at the bottom of the pear */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 25px;
+    background: #ccc;
+    border-radius: 0 0 10px 10px;
+  }
+</style>
+</head>
+<body>
+  <div class="bulb-pear"></div>
+</body>
+</html>

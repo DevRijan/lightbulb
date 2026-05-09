@@ -1,141 +1,490 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ================================================================
+   PULL-ROPE LIGHT BULB — Full Visual Design
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #222;
-}
-body.on{
-    background: radial-gradient(#555, #111);
-}
-.bulb{
-    position: relative;
-    width: 80px;
-    height: 80px;
-    background-color: #444;
-    border-radius: 50%;
-    z-index: 2;
+/* ── Root Variables ─────────────────────────────────────────────── */
+:root {
+  --bg-off:      #0d0d12;
+  --bg-on:       #0f0c08;
+  --ceiling-h:   18px;
+  --bulb-size:   96px;
+  --glow-color:  #ffe87c;
+  --rope-color:  #a07848;
+  --rope-taut:   #c9a06a;
+  --socket-h:    28px;
+  --wire-w:      3px;
+  --transition:  0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.on .bulb{
-    background-color: #fff;
-    box-shadow: 0 0 50px #fff,
-    0 0 100px #fff,
-    0 0 150px #fff,
-    0 0 200px #fff,
-    0 0 250px #fff,
-    0 0 300px #fff,
-    0 0 350px #fff,
-    0 0 400px #fff;
-}
-.bulb::before{
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: 22.5px;
-    width: 35px;
-    height: 80px;
-    background-color: #444;
-    border-top: 30px solid #000;
-    border-radius: 10px;
-}
-body.on .bulb::before{
-    background: #fff;
-}
-body.on .bulb::after{
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120px;
-    height: 120px;
-    background: #fff;
-    transform: translate(-50%,-50%);
-    border-radius: 50%;
-    filter: blur(30px);
-
-}
-.bulb span:nth-child(1){
-    position: absolute;
-    top: -16px;
-    left: -4px;
-    display: block;
-    width: 30px;
-    height: 30px;
-    background-color: transparent;
-    transform: rotate(342deg);
-    border-bottom-right-radius: 40px;
-    box-shadow: 20px 20px 0 10px #444;
-}
-body.on .bulb span:nth-child(1){
-    box-shadow: 20px 20px 0 10px #fff;
-}
-.bulb span:nth-child(2){
-    position: absolute;
-    top: -16px;
-    right: -4px;
-    display: block;
-    width: 30px;
-    height: 30px;
-    background-color: transparent;
-    transform: rotate(17deg);
-    border-bottom-left-radius: 40px;
-    box-shadow: -20px 20px 0 10px #444;
-}
-body.on .bulb span:nth-child(2){
-    box-shadow: -20px 20px 0 10px #fff;
-}
-.wire{
-    position: absolute;
-    left: calc(50% - 2px);
-    bottom: 50%;
-    width: 4px;
-    height: 60vh;
-    background: #000;
-    z-index: 1;
-}
-.switch{
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    bottom: 50px;
-    right: 50px;
-    border: 3px solid #000;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(#eee,#ccc,#eee);
-}
-.switch .switch-btn{
-    position: relative;
-    width: 25px;
-    height: 40px;
-    background: linear-gradient(#777, #fff, #777);
-    border-radius: 6px;
-    border: 2px solid #000;
-    cursor: pointer;
+/* ── Base ───────────────────────────────────────────────────────── */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.switch .switch-btn::before{
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    height: 85%;
-    background: linear-gradient(#fff,#fff);
-    border-radius: 4px;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-off);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  transition: background-color var(--transition);
+  position: relative;
 }
-.on .switch .switch-btn::before{
-    top: 15%;
+
+body.on {
+  background-color: var(--bg-on);
 }
-#audio{
-    display: none;
+
+/* ── Ceiling ────────────────────────────────────────────────────── */
+.ceiling {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--ceiling-h);
+  background: linear-gradient(180deg, #1a1a22 0%, #13131a 60%, transparent 100%);
+  z-index: 10;
+}
+
+/* Ceiling contact shadow */
+.ceiling::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+}
+
+/* ── Vignette ───────────────────────────────────────────────────── */
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%,
+    transparent 30%,
+    rgba(0,0,0,0.55) 75%,
+    rgba(0,0,0,0.85) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity var(--transition);
+}
+
+body.on .vignette {
+  opacity: 0.7;
+}
+
+/* ── Glow Bloom (behind the bulb) ───────────────────────────────── */
+.glow-bloom {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 232, 100, 0.18) 0%,
+    rgba(255, 190, 40, 0.08) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateX(-50%) scale(0.7);
+  z-index: 2;
+}
+
+body.on .glow-bloom {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── Light Cone ─────────────────────────────────────────────────── */
+.light-cone {
+  position: fixed;
+  top: 155px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 200px solid transparent;
+  border-right: 200px solid transparent;
+  border-top: 520px solid rgba(255, 232, 100, 0.04);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  z-index: 1;
+  filter: blur(18px);
+}
+
+body.on .light-cone {
+  opacity: 1;
+}
+
+/* ── Bulb Assembly ──────────────────────────────────────────────── */
+.bulb-assembly {
+  position: fixed;
+  top: var(--ceiling-h);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 8;
+}
+
+/* Hanging wire from ceiling to socket */
+.wire-to-ceiling {
+  width: var(--wire-w);
+  height: 80px;
+  background: linear-gradient(180deg, #1c1c24 0%, #2a2a35 100%);
+  border-radius: 0 0 1px 1px;
+}
+
+/* Socket (the metal cap on top of bulb) */
+.bulb-socket {
+  width: 32px;
+  height: var(--socket-h);
+  background: linear-gradient(135deg, #3a3a3a 0%, #1e1e1e 40%, #2e2e2e 100%);
+  border-radius: 4px 4px 0 0;
+  border: 1px solid #111;
+  position: relative;
+}
+
+.bulb-socket::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 5px;
+  background: linear-gradient(90deg, #111, #3a3a3a, #111);
+  border-radius: 0 0 3px 3px;
+}
+
+/* ── Bulb Glass ─────────────────────────────────────────────────── */
+.bulb {
+  width: var(--bulb-size);
+  height: var(--bulb-size);
+  /* Complex gradient for an unlit bulb to look like actual glass */
+  background: radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0.6) 80%, rgba(0, 0, 0, 0.8) 100%),
+              radial-gradient(circle at 50% 50%, #2a2a30 0%, #15151a 100%);
+  border-radius: 50%;
+  position: relative;
+  /* Simulate thick glass edges with double inner shadow */
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8),
+              inset 0 0 4px rgba(255, 255, 255, 0.1),
+              0 10px 20px rgba(0,0,0,0.5);
+  transition:
+    background 0.5s ease,
+    box-shadow 0.5s ease;
+  cursor: default;
+  /* For absolute positioning of inner glass elements */
+  overflow: hidden;
+}
+
+body.on .bulb {
+  /* Blazing hot core gradient */
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #fff4c2 15%, #ffce3a 45%, rgba(255, 140, 0, 0.8) 80%, rgba(200, 50, 0, 0.4) 100%);
+  box-shadow:
+    0 0  30px 10px rgba(255, 232, 80, 0.8),
+    0 0  80px 30px rgba(255, 200, 40, 0.6),
+    0 0 150px 60px rgba(255, 140, 20, 0.4),
+    0 0 250px 100px rgba(255, 100, 0,  0.2),
+    inset 0 0  25px 8px rgba(255, 255, 220, 0.9), /* Bright inner rim */
+    inset 0 0   5px 2px rgba(255, 255, 255, 1);
+  animation: flicker 4s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  92%       { opacity: 1; filter: brightness(1); }
+  93%       { opacity: 0.9; filter: brightness(0.85); }
+  94%       { opacity: 1; filter: brightness(1); }
+  96%       { opacity: 0.95; filter: brightness(0.9); }
+  97%       { opacity: 1; filter: brightness(1); }
+}
+
+/* Neck connector between socket and glass (screw base) */
+.bulb::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 26px;
+  /* Metallic ridges for screw thread */
+  background: repeating-linear-gradient(
+    180deg,
+    #111 0px,
+    #2a2a2a 2px,
+    #444 4px,
+    #111 6px
+  );
+  clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+  box-shadow: inset -5px 0 10px rgba(0,0,0,0.8), inset 5px 0 5px rgba(255,255,255,0.1);
+  z-index: -1;
+}
+
+body.on .bulb::before {
+  /* Warm reflection on the metallic base */
+  background: repeating-linear-gradient(
+    180deg,
+    #332200 0px,
+    #664411 2px,
+    #996622 4px,
+    #332200 6px
+  );
+}
+
+/* Inner glass stem (holds the filament) */
+.bulb::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 35px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0.05) 40%, rgba(0,0,0,0.5) 100%);
+  border-radius: 5px 5px 0 0;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  z-index: 1;
+}
+body.on .bulb::after {
+  background: linear-gradient(90deg, rgba(255,200,100,0.4) 0%, rgba(255,255,200,0.8) 20%, rgba(255,200,100,0.4) 40%, rgba(200,100,0,0.6) 100%);
+}
+
+/* ── Filament ───────────────────────────────────────────────────── */
+.filament {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.3; /* visible even when off for realism */
+  transition: opacity 0.5s ease;
+  z-index: 2;
+  margin-top: -15px; /* Adjust position relative to stem */
+}
+
+body.on .filament {
+  opacity: 1;
+}
+
+/* Multi-loop Edison style filament */
+.filament-wire {
+  width: 36px;
+  height: 24px;
+  /* Thin wire off state */
+  border: 1px solid rgba(150, 150, 150, 0.4);
+  border-radius: 50% 50% 0 0 / 80% 80% 0 0;
+  border-bottom: none;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+body.on .filament-wire {
+  /* Blazing wire on state */
+  border: 2px solid #fff;
+  border-color: #fff #fffcc0 #fffcc0 #fff;
+  box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.9),
+              0 0 15px 5px rgba(255, 220, 80, 0.8),
+              inset 0 0 5px 2px rgba(255, 200, 50, 0.6);
+  filter: drop-shadow(0 0 4px #fff);
+}
+
+/* Support wires connecting filament to stem */
+.filament-wire::before,
+.filament-wire::after {
+  content: '';
+  position: absolute;
+  bottom: -15px; /* reach down to the stem */
+  width: 2px;
+  height: 18px;
+  background: linear-gradient(180deg, rgba(150,150,150,0.6) 0%, rgba(50,50,50,0.8) 100%);
+  transition: all 0.5s ease;
+}
+
+body.on .filament-wire::before,
+body.on .filament-wire::after {
+  background: linear-gradient(180deg, #fff 0%, rgba(255,200,50,0.8) 50%, rgba(200,100,0,0.5) 100%);
+  box-shadow: 0 0 5px rgba(255, 220, 80, 0.8);
+}
+
+.filament-wire::before { left: -1px; transform: rotate(10deg); transform-origin: top; }
+.filament-wire::after  { right: -1px; transform: rotate(-10deg); transform-origin: top; }
+
+/* ── Glass Highlight (Reflection) ───────────────────────────────── */
+.bulb-highlight {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 35px;
+  height: 25px;
+  /* Curved window reflection */
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+  border-radius: 50% 40% 60% 30%;
+  transform: rotate(-25deg);
+  pointer-events: none;
+  z-index: 3;
+  /* Additional subtle reflection arc */
+  box-shadow: inset 2px 2px 5px rgba(255,255,255,0.3);
+}
+
+/* Bottom reflection bounce */
+.bulb-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -45px;
+  right: -30px;
+  width: 40px;
+  height: 15px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: rotate(30deg);
+}
+
+/* ── SVG Rope Canvas ────────────────────────────────────────────── */
+#ropeCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9;
+  overflow: visible;
+}
+
+/* ── Rope Handle / Tassel ───────────────────────────────────────── */
+.rope-handle {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: grab;
+  z-index: 15;
+  user-select: none;
+  transform: translate(-50%, 0);
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+  transition: filter 0.15s ease;
+}
+
+.rope-handle:active {
+  cursor: grabbing;
+}
+
+.rope-handle:hover {
+  filter: drop-shadow(0 4px 10px rgba(255,200,80,0.25)) drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+}
+
+/* The knot connecting rope to tassel */
+.tassel-knot {
+  width: 16px;
+  height: 14px;
+  background: radial-gradient(ellipse at 40% 35%, #c8924c, #7a4e20);
+  border-radius: 50% 50% 40% 40%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 -2px 4px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* The tassel body — cylindrical wrap */
+.tassel-body {
+  width: 22px;
+  height: 36px;
+  background: linear-gradient(135deg, #b8824a 0%, #8a5e2e 50%, #c49050 100%);
+  border-radius: 3px 3px 6px 6px;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 1px 0 2px rgba(255,255,255,0.1);
+}
+
+/* Vertical stripe texture on the tassel */
+.tassel-body span {
+  display: block;
+  width: 1px;
+  background: rgba(0,0,0,0.18);
+  border-radius: 1px;
+}
+
+/* Fringe strands at the bottom of tassel */
+.tassel-body::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: -3px;
+  width: 28px;
+  height: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    #8a5e2e 0px, #8a5e2e 3px,
+    transparent 3px, transparent 6px
+  );
+  border-radius: 0 0 4px 4px;
+}
+
+/* ── Hint Label ───────────────────────────────────────────────── */
+.hint {
+  position: fixed;
+  /* Align hint below the rope handle (rope is 140px right of center) */
+  bottom: 40px;
+  left: calc(50% + 80px);
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity 1.2s ease;
+  animation: hintFloat 2.5s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.hint.hidden {
+  opacity: 0;
+}
+
+@keyframes hintFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* ── Dust Particles (when ON) ───────────────────────────────────── */
+.dust-particle {
+  position: fixed;
+  border-radius: 50%;
+  background: rgba(255, 230, 150, 0.55);
+  pointer-events: none;
+  z-index: 3;
+  animation: dustFloat linear forwards;
+}
+
+@keyframes dustFloat {
+  0%   { opacity: 0;    transform: translateY(0) scale(1); }
+  20%  { opacity: 0.7; }
+  100% { opacity: 0;    transform: translateY(-160px) scale(0.4); }
+}
+
+/* ── Audio hidden ───────────────────────────────────────────────── */
+#audio {
+  display: none;
 }

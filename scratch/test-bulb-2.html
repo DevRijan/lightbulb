@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { background: #fff; padding: 100px; display: flex; justify-content: center; }
+  
+  .bulb-container {
+    position: relative;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* The narrow neck part (bottom of the pear) */
+  .bulb-neck {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 0.3) 100%);
+    border-radius: 0 0 30px 30px;
+    /* Negative margin to pull the top sphere down into the neck */
+    margin-top: -30px;
+    z-index: 1;
+    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.2), inset 0 0 5px rgba(255,255,255,0.5);
+  }
+  
+  /* The wide spherical top part */
+  .bulb-sphere {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 0.3) 100%);
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.2), inset 0 0 5px rgba(255,255,255,0.5), 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .base {
+    width: 40px;
+    height: 30px;
+    background: #ccc;
+    border-radius: 0 0 10px 10px;
+    background: repeating-linear-gradient(180deg, #999 0, #ccc 2px, #fff 4px, #999 6px);
+  }
+</style>
+</head>
+<body>
+  <div class="bulb-container">
+    <div class="bulb-sphere"></div>
+    <div class="bulb-neck"></div>
+    <div class="base"></div>
+  </div>
+</body>
+</html>

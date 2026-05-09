@@ -1,37 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Light Bulb Trun ON/OFF</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive physics-based pull-rope light bulb — drag the rope to toggle the light with realistic spring motion.">
+  <title>Pull-Rope Light Bulb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="light">
-        <div class="wire"></div>
-        <div class="bulb">
-            <span></span>
-            <span></span>
-        </div>
-        <div class="switch">
-            <div class="switch-btn"></div>
-        </div>
+
+  <!-- Ceiling bar -->
+  <div class="ceiling"></div>
+
+  <!-- Room atmosphere / vignette -->
+  <div class="vignette"></div>
+
+  <!-- Warm glow bloom that expands behind the bulb when ON -->
+  <div class="glow-bloom" id="glowBloom"></div>
+
+  <!-- Projected cone of light downward -->
+  <div class="light-cone" id="lightCone"></div>
+
+  <!-- Bulb assembly: hanging wire + socket + glass bulb -->
+  <div class="bulb-assembly" id="bulbAssembly">
+    <div class="wire-to-ceiling"></div>
+    <div class="bulb-socket"></div>
+    <div class="bulb" id="bulb">
+      <div class="filament" id="filament">
+        <div class="filament-wire"></div>
+      </div>
+      <div class="bulb-highlight"></div>
     </div>
+  </div>
 
-    <!--add sound on click-->
+  <!-- SVG overlay — rope is drawn here each animation frame -->
+  <svg id="ropeCanvas" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <filter id="ropeShadowFilter" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-color="#000" flood-opacity="0.5"/>
+      </filter>
+    </defs>
+    <path id="ropePathShadow" fill="none" stroke="#000" stroke-width="7"
+          stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.22"/>
+    <path id="ropePath" fill="none" stroke="#b8874e" stroke-width="5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
 
-    <audio id="audio" src="click.mp3" autostart="false"></audio>
+  <!-- Tassel handle — JS positions this at the rope's bottom node -->
+  <div class="rope-handle" id="ropeHandle"
+       role="button" tabindex="0"
+       aria-label="Pull rope to toggle light"
+       title="Pull rope to toggle light">
+    <div class="tassel-knot"></div>
+    <div class="tassel-body">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
 
-    <script>
-        let switchBtn = document.querySelector('.switch-btn');
-        let body = document.querySelector('body');
-        let audio = document.querySelector('#audio');
+  <!-- First-use hint label -->
+  <div class="hint" id="hint">↓ Pull the rope</div>
 
-        switchBtn.onclick = function(){
-            body.classList.toggle('on');
-            audio.play();
-        }
-    </script>
+  <!-- Audio fallback -->
+  <audio id="audio" src="click.mp3" preload="auto"></audio>
 
+  <script src="script.js"></script>
 </body>
 </html>
