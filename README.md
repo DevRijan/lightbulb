@@ -1,70 +1,32 @@
-💡 LightBulb Web Project
+# 💡 LightBulb
 
-The LightBulb project is a simple web application built using HTML, CSS, and JavaScript that simulates turning a light bulb ON and OFF. It demonstrates basic web development concepts such as DOM manipulation, event handling, and styling.
+A clean and interactive light bulb simulation built with HTML, CSS, and JavaScript.  
+The project demonstrates core front-end concepts including DOM manipulation, event-driven interaction, and UI animation.
 
-This project is beginner-friendly and useful for students learning front-end web development.
+## ✨ Features
 
-🚀 Features
+- Toggle light ON/OFF
+- Interactive sound feedback
+- Smooth and minimal UI
+- Beginner-friendly architecture
+- Lightweight and responsive
 
+## 🛠️ Tech Stack
 
-Turn the light bulb ON
+- HTML
+- CSS
+- JavaScript
 
-Turn the light bulb OFF
+## 🚀 Run Locally
 
-Interactive button control
-
-Simple and responsive design
-
-Beginner-friendly JavaScript logic
-
-🛠️ Technologies Used
-
-
-HTML – Structure of the webpage
-
-CSS – Styling and layout
-
-JavaScript – Functionality and interaction
-
-📂 Project Structure
-
-
-LightBulb/
-│── index.html
-│── style.css
-│── click.mp3
-│── README.md
-
-⚙️ How to Run the Project
-
-
-Download or clone the repository:
+```bash
 git clone https://github.com/anjila-in-github/lightbulb.git
-Open the project folder.
-Double-click index.html
-or
-Right-click → Open with Browser
 
-🎯 Learning Objectives
+🔮 Planned Enhancements
 
-
-Understand basic HTML structure
-
-Apply CSS styling
-
-Use JavaScript for DOM manipulation
-
-Build a simple interactive web project
-
-
-🔮 Future Improvements
-
-
-Add brightness control
-
-Make mobile responsive
-
-Add dark/light mode
+Rope-pull interaction system
+Physics-based animation
+Aligns with Elasticity and Gravity
 
 👩‍💻 Author
 
