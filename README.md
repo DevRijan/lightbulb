@@ -21,6 +21,8 @@ The project demonstrates core front-end concepts including DOM manipulation, eve
 
 ```bash
 git clone https://github.com/anjila-in-github/lightbulb.git
+cd lightbulb
+```
 
 🔮 Planned Enhancements
 
